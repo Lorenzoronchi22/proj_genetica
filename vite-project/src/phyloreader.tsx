@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import phyloTree from 'phylotree';
 
-function Phylotree_viewer({ jsonTree }) {
+function Phylotree_viewer({jsonTree}) {
   useEffect(() => {
     const tree = phyloTree();
 
