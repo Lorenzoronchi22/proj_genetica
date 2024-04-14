@@ -1,23 +1,41 @@
-import React, { useEffect } from 'react';
-import phyloTree from 'phylotree';
+import React, { useState, useEffect } from 'react';
+import { phylotree } from 'phylotree';
 
-function Phylotree_viewer({jsonTree}) {
+const PhyloXMLReader = () => {
+  const [phyloXMLString, setPhyloXMLString] = useState(null);
+
   useEffect(() => {
-    const tree = phyloTree();
-
-    tree(jsonTree).svg("#phylo-tree");
-
-    return () => {
-      tree.clear();
+    const fetchPhyloXML = async () => {
+      try {
+        const response = await fetch('/chr11_54,438,913-54,454,947.tree.xml'); // Assicurati che il percorso sia corretto
+        if (!response.ok) {
+          throw new Error('Errore nel recupero del file PhyloXML');
+        }
+        const xmlString = await response.text();
+        setPhyloXMLString(xmlString);
+      } catch (error) {
+        console.error(error);
+      }
     };
-  }, [jsonTree]);
 
+    fetchPhyloXML();
+  }, []);
+  
   return (
-    <div id="phylo-tree" />
+    <div>
+      {phyloXMLString && (
+        <div>
+          <h2>Contenuto del file PhyloXML:</h2>
+          <pre>{phyloXMLString}</pre>
+        </div>
+      )}
+    </div>
   );
-}
+};
 
-export default Phylotree_viewer;
+
+export default PhyloXMLReader;
+
 
 
 
